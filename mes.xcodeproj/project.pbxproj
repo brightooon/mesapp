@@ -13,6 +13,7 @@
 		EC76905E26A5E38900710C5A /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76905D26A5E38900710C5A /* VideoViewController.swift */; };
 		EC76907026A5E42400710C5A /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76906F26A5E42400710C5A /* NewViewController.swift */; };
 		EC76907826A5E43000710C5A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76907726A5E43000710C5A /* ProfileViewController.swift */; };
+		EC76908426A5ECC000710C5A /* exten.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76908326A5ECC000710C5A /* exten.swift */; };
 		EC93DF1326A5838600EC2347 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1226A5838600EC2347 /* AppDelegate.swift */; };
 		EC93DF1526A5838600EC2347 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1426A5838600EC2347 /* SceneDelegate.swift */; };
 		EC93DF1726A5838600EC2347 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1626A5838600EC2347 /* ConversationViewController.swift */; };
@@ -47,6 +48,7 @@
 		EC76905D26A5E38900710C5A /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		EC76906F26A5E42400710C5A /* NewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
 		EC76907726A5E43000710C5A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		EC76908326A5ECC000710C5A /* exten.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exten.swift; sourceTree = "<group>"; };
 		EC93DF0F26A5838600EC2347 /* mes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC93DF1226A5838600EC2347 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC93DF1426A5838600EC2347 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,8 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				EC93DF1626A5838600EC2347 /* ConversationViewController.swift */,
-				EC76904B26A5E32200710C5A /* LoginViewController.swift */,
-				EC76905326A5E34800710C5A /* RegisterViewController.swift */,
+				EC76907C26A5E64300710C5A /* Sign */,
 				EC76905826A5E37300710C5A /* PhotoViewController.swift */,
 				EC76905D26A5E38900710C5A /* VideoViewController.swift */,
 				EC76906F26A5E42400710C5A /* NewViewController.swift */,
@@ -123,6 +124,7 @@
 			children = (
 				EC93DF1226A5838600EC2347 /* AppDelegate.swift */,
 				EC93DF1426A5838600EC2347 /* SceneDelegate.swift */,
+				EC76908326A5ECC000710C5A /* exten.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -134,6 +136,15 @@
 				EC93DF1D26A5838F00EC2347 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		EC76907C26A5E64300710C5A /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				EC76904B26A5E32200710C5A /* LoginViewController.swift */,
+				EC76905326A5E34800710C5A /* RegisterViewController.swift */,
+			);
+			path = Sign;
 			sourceTree = "<group>";
 		};
 		EC93DF0626A5838600EC2347 = {
@@ -322,6 +333,7 @@
 				EC76907026A5E42400710C5A /* NewViewController.swift in Sources */,
 				EC93DF1726A5838600EC2347 /* ConversationViewController.swift in Sources */,
 				EC93DF1326A5838600EC2347 /* AppDelegate.swift in Sources */,
+				EC76908426A5ECC000710C5A /* exten.swift in Sources */,
 				EC76907826A5E43000710C5A /* ProfileViewController.swift in Sources */,
 				EC93DF1526A5838600EC2347 /* SceneDelegate.swift in Sources */,
 				EC76905926A5E37300710C5A /* PhotoViewController.swift in Sources */,
