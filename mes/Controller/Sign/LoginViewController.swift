@@ -67,7 +67,9 @@ class LoginViewController: UIViewController {
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(tapregister))
-    
+        loginbutton.addTarget(self, action: #selector(logintapped), for: .touchUpInside)
+        emailfield.delegate = self
+        passwordfield.delegate = self
         view.addSubview(scrollview)
         scrollview.addSubview(emailfield)
         scrollview.addSubview(passwordfield)
@@ -78,17 +80,38 @@ class LoginViewController: UIViewController {
         scrollview.frame = view.bounds
         let size = scrollview.width/3
         emailfield.frame = CGRect(x:30,
-                                  y:220,
+                                  y:(size*2)+20,
                                   width:scrollview.width-60,
-                                  height:50)
+                                  height:40)
         passwordfield.frame = CGRect(x:30,
-                                     y:emailfield.bottom+20,
+                                     y:emailfield.bottom+10,
                                      width:scrollview.width-60,
-                                     height:50)
+                                     height:40)
         loginbutton.frame = CGRect(x:30,
-                                     y:passwordfield.bottom+20,
+                                     y:passwordfield.bottom+10,
                                      width:scrollview.width-60,
-                                     height:50)
+                                     height:40)
+    }
+    
+    @objc private func logintapped(){
+        
+        emailfield.resignFirstResponder()
+        passwordfield.resignFirstResponder()
+        guard let email = emailfield.text, let password = passwordfield.text,
+              !email.isEmpty, !password.isEmpty, password.count >= 4 else{
+            alertloginerror()
+            return
+        }
+        //Firebase
+    }
+    func alertloginerror(){
+        let alert = UIAlertController(title: "Login failed",
+                                      message: "Please Try Again to log in",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title:"Dimiss",
+                                      style: .cancel,
+                                      handler: nil))
+        present(alert, animated: true)
     }
     @objc private func tapregister(){
         let x = RegisterViewController()
@@ -106,4 +129,16 @@ class LoginViewController: UIViewController {
     }
     */
 
+}
+
+extension LoginViewController: UITextFieldDelegate{
+    func returntextfield(_ textfield: UITextField) -> Bool{
+        if textfield == emailfield {
+            passwordfield.becomeFirstResponder()
+        }
+        else if textfield == passwordfield {
+            logintapped()
+        }
+        return true
+    }
 }
