@@ -18,12 +18,12 @@ class RegisterViewController: UIViewController {
     private let imageview: UIImageView = {
         let imageview = UIImageView()
         let small = UIImage.SymbolConfiguration(weight: .thin)
-        imageview.image = UIImage(systemName: "person", withConfiguration: small)
-        imageview.tintColor = .blue
-        imageview.contentMode = .scaleAspectFill
-        imageview.layer.masksToBounds = true
-        imageview.layer.borderWidth = 2
-        imageview.layer.borderColor = UIColor.systemBlue.cgColor
+        imageview.image = UIImage(systemName: "person.circle.fill", withConfiguration: small)
+        imageview.tintColor = .black
+        //imageview.contentMode = .scaleAspectFill
+        //imageview.layer.masksToBounds = true
+        //imageview.layer.borderWidth = 2
+        //imageview.layer.borderColor = UIColor.systemBlue.cgColor
         return imageview
     }()
     
@@ -54,7 +54,7 @@ class RegisterViewController: UIViewController {
         pw.leftView = UIView(frame: CGRect(x:0, y:0, width:5, height:0))
         pw.leftViewMode = .always
         pw.backgroundColor = .white
-        pw.isSecureTextEntry = true
+       // pw.isSecureTextEntry = true
         return pw
     }()
     
@@ -165,24 +165,41 @@ class RegisterViewController: UIViewController {
         firstnamefield.resignFirstResponder()
         lastnamefield.resignFirstResponder()
         
-        guard let firstname = firstnamefield.text, let email = emailfield.text, let password = passwordfield.text,
-              !email.isEmpty, !firstname.isEmpty, !password.isEmpty, password.count >= 4 else{
+        guard let firstname = firstnamefield.text, let lastname = lastnamefield.text, let email = emailfield.text, let password = passwordfield.text,
+              !email.isEmpty,
+              !firstname.isEmpty,
+              !password.isEmpty,
+              password.count >= 6 else{
             alertloginerror()
             return
         }
         //Firebase
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: {authResult, error in
-            guard let result = authResult, error == nil else{
-                print("Error")
+        databaseset.shared.vaildateuser(with: email, completion: { [weak self] exists in
+            guard let strongself = self else{
+               return
+           }
+            guard !exists else{
+                strongself.alertloginerror(message: "email already registered")
                 return
             }
-            let user = result.user
-            print("User created: \(user)")
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { authResult, error in
+                
+                
+                guard authResult != nil,error == nil else{
+                    print("Error")
+                    return
+                }
+                
+                databaseset.shared.insert(with: chatuser(firstname: firstname,
+                                                         lastname: lastname,
+                                                         email: email))
+               strongself.navigationController?.dismiss(animated: true, completion: nil)
+            })
         })
     }
-    func alertloginerror(){
+    func alertloginerror(message: String = "Try Again to sign up a account"){
         let alert = UIAlertController(title: "Sign Up failed",
-                                      message: "Try Again to sign up a account",
+                                      message: message,
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title:"Dimiss",
                                       style: .cancel,

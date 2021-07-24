@@ -19,6 +19,7 @@
 		EC76908426A5ECC000710C5A /* exten.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76908326A5ECC000710C5A /* exten.swift */; };
 		EC76908926A6E89F00710C5A /* GoogletranslateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76908826A6E89F00710C5A /* GoogletranslateViewController.swift */; };
 		EC7690A526A8717900710C5A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC7690A426A8717900710C5A /* GoogleService-Info.plist */; };
+		EC7690AD26AC27BE00710C5A /* databaseset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7690AC26AC27BE00710C5A /* databaseset.swift */; };
 		EC93DF1326A5838600EC2347 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1226A5838600EC2347 /* AppDelegate.swift */; };
 		EC93DF1526A5838600EC2347 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1426A5838600EC2347 /* SceneDelegate.swift */; };
 		EC93DF1726A5838600EC2347 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1626A5838600EC2347 /* ConversationViewController.swift */; };
@@ -65,6 +66,7 @@
 		EC76908326A5ECC000710C5A /* exten.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exten.swift; sourceTree = "<group>"; };
 		EC76908826A6E89F00710C5A /* GoogletranslateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogletranslateViewController.swift; sourceTree = "<group>"; };
 		EC7690A426A8717900710C5A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EC7690AC26AC27BE00710C5A /* databaseset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = databaseset.swift; sourceTree = "<group>"; };
 		EC93DF0F26A5838600EC2347 /* mes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC93DF1226A5838600EC2347 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC93DF1426A5838600EC2347 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				EC93DF1226A5838600EC2347 /* AppDelegate.swift */,
 				EC93DF1426A5838600EC2347 /* SceneDelegate.swift */,
 				EC76908326A5ECC000710C5A /* exten.swift */,
+				EC7690AC26AC27BE00710C5A /* databaseset.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -484,6 +487,7 @@
 			files = (
 				EC76904C26A5E32200710C5A /* LoginViewController.swift in Sources */,
 				EC76905E26A5E38900710C5A /* VideoViewController.swift in Sources */,
+				EC7690AD26AC27BE00710C5A /* databaseset.swift in Sources */,
 				EC76905426A5E34800710C5A /* RegisterViewController.swift in Sources */,
 				EC76907026A5E42400710C5A /* NewViewController.swift in Sources */,
 				EC93DF1726A5838600EC2347 /* ConversationViewController.swift in Sources */,
