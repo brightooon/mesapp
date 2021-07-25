@@ -13,7 +13,7 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        view.backgroundColor = .systemTeal
+        //view.backgroundColor = .systemTeal
         
     }
     override func viewDidAppear(_ animated: Bool){
