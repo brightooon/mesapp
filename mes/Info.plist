@@ -21,7 +21,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fbAPP-ID</string>
+				<string>fb4267219356680362</string>
 			</array>
 		</dict>
 		<dict>
@@ -42,11 +42,11 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>APP-ID</string>
+	<string>4267219356680362</string>
 	<key>FacebookClientToken</key>
-	<string>CLIENT-TOKEN</string>
+	<string>7e46527fea01554d4bbf944e6d003577</string>
 	<key>FacebookDisplayName</key>
-	<string>APP-NAME</string>
+	<string>Mesapp</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
