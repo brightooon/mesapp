@@ -9,6 +9,9 @@ target 'mes' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
+  pod 'FBSDKLoginKit'
+  pod 'GoogleSignIn'
+	
 
   target 'mesTests' do
     inherit! :search_paths

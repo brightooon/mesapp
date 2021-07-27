@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FBSDKLoginKit
 import FirebaseAuth
 
 class LoginViewController: UIViewController {
@@ -57,6 +58,11 @@ class LoginViewController: UIViewController {
         loginb.titleLabel?.font = .systemFont(ofSize: 20, weight: .heavy)
         return loginb
     }()
+    private let loginfButton: FBLoginButton = {
+        let button = FBLoginButton()
+        button.permissions = ["email", "profile"]
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,10 +77,15 @@ class LoginViewController: UIViewController {
         loginbutton.addTarget(self, action: #selector(logintapped), for: .touchUpInside)
         emailfield.delegate = self
         passwordfield.delegate = self
+        //for fb
+        loginfButton.delegate = self
+        
         view.addSubview(scrollview)
         scrollview.addSubview(emailfield)
         scrollview.addSubview(passwordfield)
         scrollview.addSubview(loginbutton)
+        
+        scrollview.addSubview(loginfButton)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -92,7 +103,13 @@ class LoginViewController: UIViewController {
                                      y:passwordfield.bottom+10,
                                      width:scrollview.width-60,
                                      height:40)
+        //loginfButton.center = scrollview.center
+        loginfButton.frame =  CGRect(x:30,
+                                     y:loginbutton.bottom+20,
+                                     width:scrollview.width-60,
+                                     height:40)
     }
+    
     
     @objc private func logintapped(){
         
@@ -154,5 +171,56 @@ extension LoginViewController: UITextFieldDelegate{
             logintapped()
         }
         return true
+    }
+}
+
+
+extension LoginViewController: LoginButtonDelegate{
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+    }
+    
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        guard let token = result?.token?.tokenString else {
+            print("User failed to log in facebook")
+            return
+        }
+        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, name"], tokenString: token, version: nil, httpMethod: .get)
+        facebookRequest.start(completion: { _, result, error in
+            guard let result = result as? [String: Any], error == nil else{
+                print("failed to make facebook graph request")
+                return
+            }
+           // print("\(result)")
+            
+            guard let username = result["name"] as? String, let email = result["email"] as? String else{
+                print("failed to get name and email")
+                return
+            }
+            let namecomponents = username.components(separatedBy: " ")
+            guard namecomponents.count == 2 else{
+                return
+            }
+            let firstname = namecomponents[0]
+            let lastname = namecomponents[1]
+            databaseset.shared.vaildateuser(with: email, completion: { exists in
+                if !exists {
+                    databaseset.shared.insert(with: chatuser(firstname: firstname, lastname: lastname, email: email))
+                }
+            })
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
+                guard let strongself = self else {
+                    return
+                }
+                guard authResult != nil, error == nil else{
+                    if let error = error {
+                        print("Facebook credentail login failed, \(error)")
+                    }
+                    return
+                }
+                print("login successfully")
+                strongself.navigationController?.dismiss(animated: true, completion: nil)
+            })
+        })
     }
 }
