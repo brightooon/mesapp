@@ -14,12 +14,13 @@
 		EC76905426A5E34800710C5A /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76905326A5E34800710C5A /* RegisterViewController.swift */; };
 		EC76905926A5E37300710C5A /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76905826A5E37300710C5A /* PhotoViewController.swift */; };
 		EC76905E26A5E38900710C5A /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76905D26A5E38900710C5A /* VideoViewController.swift */; };
-		EC76907026A5E42400710C5A /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76906F26A5E42400710C5A /* ChatViewController.swift */; };
 		EC76907826A5E43000710C5A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76907726A5E43000710C5A /* ProfileViewController.swift */; };
 		EC76908426A5ECC000710C5A /* exten.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76908326A5ECC000710C5A /* exten.swift */; };
 		EC7690A526A8717900710C5A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC7690A426A8717900710C5A /* GoogleService-Info.plist */; };
 		EC7690AD26AC27BE00710C5A /* databaseset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7690AC26AC27BE00710C5A /* databaseset.swift */; };
 		EC76912D26B0A3A900710C5A /* GoogleTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76912C26B0A3A900710C5A /* GoogleTranslate.swift */; };
+		EC76917E26B1D08B00710C5A /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76917D26B1D08B00710C5A /* ChatViewController.swift */; };
+		EC76918326B1D09700710C5A /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76918226B1D09700710C5A /* NewViewController.swift */; };
 		EC93DF1326A5838600EC2347 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1226A5838600EC2347 /* AppDelegate.swift */; };
 		EC93DF1526A5838600EC2347 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1426A5838600EC2347 /* SceneDelegate.swift */; };
 		EC93DF1726A5838600EC2347 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1626A5838600EC2347 /* ConversationViewController.swift */; };
@@ -61,12 +62,13 @@
 		EC76905326A5E34800710C5A /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		EC76905826A5E37300710C5A /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		EC76905D26A5E38900710C5A /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
-		EC76906F26A5E42400710C5A /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		EC76907726A5E43000710C5A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		EC76908326A5ECC000710C5A /* exten.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exten.swift; sourceTree = "<group>"; };
 		EC7690A426A8717900710C5A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EC7690AC26AC27BE00710C5A /* databaseset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = databaseset.swift; sourceTree = "<group>"; };
 		EC76912C26B0A3A900710C5A /* GoogleTranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleTranslate.swift; sourceTree = "<group>"; };
+		EC76917D26B1D08B00710C5A /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		EC76918226B1D09700710C5A /* NewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
 		EC93DF0F26A5838600EC2347 /* mes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC93DF1226A5838600EC2347 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC93DF1426A5838600EC2347 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -141,8 +143,9 @@
 				EC76907C26A5E64300710C5A /* Sign */,
 				EC76905826A5E37300710C5A /* PhotoViewController.swift */,
 				EC76905D26A5E38900710C5A /* VideoViewController.swift */,
-				EC76906F26A5E42400710C5A /* ChatViewController.swift */,
 				EC76907726A5E43000710C5A /* ProfileViewController.swift */,
+				EC76917D26B1D08B00710C5A /* ChatViewController.swift */,
+				EC76918226B1D09700710C5A /* NewViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -490,12 +493,13 @@
 				EC7690AD26AC27BE00710C5A /* databaseset.swift in Sources */,
 				EC76912D26B0A3A900710C5A /* GoogleTranslate.swift in Sources */,
 				EC76905426A5E34800710C5A /* RegisterViewController.swift in Sources */,
-				EC76907026A5E42400710C5A /* ChatViewController.swift in Sources */,
 				EC93DF1726A5838600EC2347 /* ConversationViewController.swift in Sources */,
 				EC93DF1326A5838600EC2347 /* AppDelegate.swift in Sources */,
 				EC76908426A5ECC000710C5A /* exten.swift in Sources */,
 				EC76907826A5E43000710C5A /* ProfileViewController.swift in Sources */,
+				EC76918326B1D09700710C5A /* NewViewController.swift in Sources */,
 				EC93DF1526A5838600EC2347 /* SceneDelegate.swift in Sources */,
+				EC76917E26B1D08B00710C5A /* ChatViewController.swift in Sources */,
 				EC76905926A5E37300710C5A /* PhotoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

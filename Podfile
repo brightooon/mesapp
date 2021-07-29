@@ -11,7 +11,11 @@ target 'mes' do
   pod 'Firebase/Database'
   pod 'FBSDKLoginKit'
   pod 'GoogleSignIn'
-	
+
+  pod 'MessageKit'
+  pod 'JGProgressHUD'
+  pod 'RealmSwift'
+  pod 'SDWebImage' 
 
   target 'mesTests' do
     inherit! :search_paths
