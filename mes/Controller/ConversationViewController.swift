@@ -25,7 +25,7 @@ class ConversationViewController: UIViewController {
         let label = UILabel()
         label.text = "No Conversation"
         label.textAlignment = .center
-        label.textColor = .systemGray2
+        label.textColor = .systemGray
         label.font = .systemFont(ofSize: 22, weight: .medium)
         label.isHidden = true
         return label

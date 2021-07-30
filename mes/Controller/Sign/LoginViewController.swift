@@ -8,7 +8,7 @@
 import UIKit
 import FBSDKLoginKit
 import FirebaseAuth
-import  JGProgressHUD
+import JGProgressHUD
 
 class LoginViewController: UIViewController {
     private let spinner = JGProgressHUD(style: .dark)
@@ -62,7 +62,7 @@ class LoginViewController: UIViewController {
     }()
     private let loginfButton: FBLoginButton = {
         let button = FBLoginButton()
-        button.permissions = ["email", "profile"]
+        button.permissions = ["email", "public_profile"]
         return button
     }()
     
@@ -81,7 +81,6 @@ class LoginViewController: UIViewController {
         passwordfield.delegate = self
         //for fb
         loginfButton.delegate = self
-        
         view.addSubview(scrollview)
         scrollview.addSubview(emailfield)
         scrollview.addSubview(passwordfield)
@@ -110,6 +109,7 @@ class LoginViewController: UIViewController {
                                      y:loginbutton.bottom+20,
                                      width:scrollview.width-60,
                                      height:40)
+ 
     }
     
     
@@ -146,7 +146,7 @@ class LoginViewController: UIViewController {
         let alert = UIAlertController(title: "Login failed",
                                       message: "Please Try Again to log in",
                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title:"Dimiss",
+        alert.addAction(UIAlertAction(title:"Dismiss",
                                       style: .cancel,
                                       handler: nil))
         present(alert, animated: true)
@@ -156,17 +156,6 @@ class LoginViewController: UIViewController {
         x.title = "Create Account"
         navigationController?.pushViewController(x, animated: true)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension LoginViewController: UITextFieldDelegate{
@@ -181,7 +170,6 @@ extension LoginViewController: UITextFieldDelegate{
     }
 }
 
-
 extension LoginViewController: LoginButtonDelegate{
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
     }
@@ -191,27 +179,50 @@ extension LoginViewController: LoginButtonDelegate{
             print("User failed to log in facebook")
             return
         }
-        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, name"], tokenString: token, version: nil, httpMethod: .get)
+        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, first_name, last_name, picture.type(large)"], tokenString: token, version: nil, httpMethod: .get)
         facebookRequest.start(completion: { _, result, error in
             guard let result = result as? [String: Any], error == nil else{
                 print("failed to make facebook graph request")
                 return
             }
-           // print("\(result)")
-            
-            guard let username = result["name"] as? String, let email = result["email"] as? String else{
+           print(result)
+            guard let firstname = result["first_name"] as? String, let lastname = result["last_name"] as? String, let email = result["email"] as? String, let picture = result["picture"] as? [String: Any], let data = picture["data"] as? [String: Any], let pictureURL = data["url"] as? String else{
                 print("failed to get name and email")
                 return
             }
-            let namecomponents = username.components(separatedBy: " ")
-            guard namecomponents.count == 2 else{
-                return
-            }
-            let firstname = namecomponents[0]
-            let lastname = namecomponents[1]
+            
+            UserDefaults.standard.set(email, forKey: "email")
+            UserDefaults.standard.set("\(firstname)\(lastname)", forKey: "name")
+            
             databaseset.shared.vaildateuser(with: email, completion: { exists in
                 if !exists {
-                    databaseset.shared.insert(with: chatuser(firstname: firstname, lastname: lastname, email: email))
+                    let user = chatuser(firstname: firstname, lastname: lastname, email: email)
+                    databaseset.shared.insert(with: user, completion: { success in
+                        if success{
+                            guard let url = URL(string: pictureURL) else {
+                                return
+                            }
+                            print("downloading data from facebook image")
+                            URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
+                                guard let data = data else{
+                                    print("failed to get data from facebook")
+                                    return
+                                }
+                                print("got data from FB")
+                                
+                                let filename = user.profilePic
+                                StorageSet.shared.uploadProfilePic(with: data, fileName: filename, completion: { result in
+                                    switch result{
+                                    case .success(let downloadURL):
+                                        UserDefaults.standard.set(downloadURL, forKey: "profile_picture_url")
+                                        print(downloadURL)
+                                    case .failure(let error):
+                                        print("Storage error: \(error)")
+                                    }
+                                })
+                            }).resume()
+                        }
+                    })
                 }
             })
             let credential = FacebookAuthProvider.credential(withAccessToken: token)
@@ -221,7 +232,7 @@ extension LoginViewController: LoginButtonDelegate{
                 }
                 guard authResult != nil, error == nil else{
                     if let error = error {
-                        print("Facebook credentail login failed, \(error)")
+                        print("Facebook credential login failed, \(error)")
                     }
                     return
                 }

@@ -21,6 +21,7 @@
 		EC76912D26B0A3A900710C5A /* GoogleTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76912C26B0A3A900710C5A /* GoogleTranslate.swift */; };
 		EC76917E26B1D08B00710C5A /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76917D26B1D08B00710C5A /* ChatViewController.swift */; };
 		EC76918326B1D09700710C5A /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76918226B1D09700710C5A /* NewViewController.swift */; };
+		EC7691B326B2335B00710C5A /* StorageSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7691B226B2335B00710C5A /* StorageSet.swift */; };
 		EC93DF1326A5838600EC2347 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1226A5838600EC2347 /* AppDelegate.swift */; };
 		EC93DF1526A5838600EC2347 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1426A5838600EC2347 /* SceneDelegate.swift */; };
 		EC93DF1726A5838600EC2347 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93DF1626A5838600EC2347 /* ConversationViewController.swift */; };
@@ -69,6 +70,7 @@
 		EC76912C26B0A3A900710C5A /* GoogleTranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleTranslate.swift; sourceTree = "<group>"; };
 		EC76917D26B1D08B00710C5A /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		EC76918226B1D09700710C5A /* NewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
+		EC7691B226B2335B00710C5A /* StorageSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageSet.swift; sourceTree = "<group>"; };
 		EC93DF0F26A5838600EC2347 /* mes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC93DF1226A5838600EC2347 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC93DF1426A5838600EC2347 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				EC76908326A5ECC000710C5A /* exten.swift */,
 				EC7690AC26AC27BE00710C5A /* databaseset.swift */,
 				EC76912C26B0A3A900710C5A /* GoogleTranslate.swift */,
+				EC7691B226B2335B00710C5A /* StorageSet.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				EC93DF0C26A5838600EC2347 /* Frameworks */,
 				EC93DF0D26A5838600EC2347 /* Resources */,
 				7B1926CC01BE9529BF02AB94 /* [CP] Embed Pods Frameworks */,
+				AAD34302415B42A40A15F693 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -299,6 +303,7 @@
 				EC93DF2D26A5838F00EC2347 /* Frameworks */,
 				EC93DF2E26A5838F00EC2347 /* Resources */,
 				CFBADC4BF62AA337A69E7D7A /* [CP] Embed Pods Frameworks */,
+				CD9CB684F621E599335E8CEF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -464,6 +469,40 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-mes/Pods-mes-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		AAD34302415B42A40A15F693 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-mes/Pods-mes-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-mes/Pods-mes-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-mes/Pods-mes-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CD9CB684F621E599335E8CEF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-mes-mesUITests/Pods-mes-mesUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-mes-mesUITests/Pods-mes-mesUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-mes-mesUITests/Pods-mes-mesUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		CFBADC4BF62AA337A69E7D7A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -498,6 +537,7 @@
 				EC76908426A5ECC000710C5A /* exten.swift in Sources */,
 				EC76907826A5E43000710C5A /* ProfileViewController.swift in Sources */,
 				EC76918326B1D09700710C5A /* NewViewController.swift in Sources */,
+				EC7691B326B2335B00710C5A /* StorageSet.swift in Sources */,
 				EC93DF1526A5838600EC2347 /* SceneDelegate.swift in Sources */,
 				EC76917E26B1D08B00710C5A /* ChatViewController.swift in Sources */,
 				EC76905926A5E37300710C5A /* PhotoViewController.swift in Sources */,

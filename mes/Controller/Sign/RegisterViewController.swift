@@ -159,6 +159,7 @@ class RegisterViewController: UIViewController {
                                      y:passwordfield.bottom+10,
                                      width:scrollview.width-60,
                                      height:40)
+
     }
     
     @objc private func registertapped(){
@@ -197,9 +198,29 @@ class RegisterViewController: UIViewController {
                     return
                 }
                 
-                databaseset.shared.insert(with: chatuser(firstname: firstname,
-                                                         lastname: lastname,
-                                                         email: email))
+                let user = chatuser(firstname: firstname,
+                                    lastname: lastname,
+                                    email: email)
+                databaseset.shared.insert(with: user, completion: { success in
+                    if success {
+                        //upload image
+                        guard let image = strongself.imageview.image,
+                              let data = image.pngData() else{
+                            return
+                        }
+                        let filename = user.profilePic
+                        StorageSet.shared.uploadProfilePic(with: data, fileName: filename, completion: { result in
+                            switch result{
+                            case .success(let downloadURL):
+                                UserDefaults.standard.set(downloadURL, forKey: "profile_picture_url")
+                                print(downloadURL)
+                            
+                            case .failure(let error):
+                                print("Storage error: \(error)")
+                            }
+                        })
+                    }
+                })
                strongself.navigationController?.dismiss(animated: true, completion: nil)
             })
         })
@@ -219,15 +240,6 @@ class RegisterViewController: UIViewController {
         navigationController?.pushViewController(x, animated: true)
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 

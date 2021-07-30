@@ -24,11 +24,18 @@ extension databaseset{
             completion(true)
         })
     }
-    public func insert(with user: chatuser){
+    public func insert(with user: chatuser, completion: @escaping (Bool)-> Void){
         database.child(user.safeemail).setValue([
             "first_name": user.firstname,
             "last_name": user.lastname
-        ])
+        ], withCompletionBlock: { done, _ in
+            guard done == nil else {
+                print("failed to write into database")
+                completion(false)
+                return
+            }
+            completion(true)
+        })
     }
 }
 struct chatuser{
@@ -39,6 +46,10 @@ struct chatuser{
         var safeemail = email.replacingOccurrences(of: ".", with: "-")
         safeemail = safeemail.replacingOccurrences(of: "@", with: "-")
         return safeemail
+    }
+    
+    var profilePic: String{
+        return "\(safeemail)_profile_picture_png"
     }
 }
 
