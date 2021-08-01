@@ -137,6 +137,8 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
+            UserDefaults.standard.set(email, forKey: "email")
+            
             print("Login successful, \(user)")
             strongself.navigationController?.dismiss(animated: true, completion: nil)
             
