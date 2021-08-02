@@ -9,6 +9,8 @@ import UIKit
 import JGProgressHUD
 
 class NewViewController: UIViewController {
+    public var completion: (([String: String]) -> (Void))?
+    
     private let spinner = JGProgressHUD(style: .dark)
     private var users = [[String: String]]()
     private var fetched = false
@@ -44,10 +46,15 @@ class NewViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         searchbar.delegate = self
-        view.backgroundColor = .darkGray
+        view.backgroundColor = .systemBackground
         navigationController?.navigationBar.topItem?.titleView = searchbar
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(dismissSelf))
         searchbar.becomeFirstResponder()
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+        noResults.frame = CGRect(x: view.width/4, y: (view.height - 200)/2, width: view.width/2, height: 200)
     }
     @objc private func dismissSelf(){
         dismiss(animated: true, completion: nil)
@@ -65,6 +72,10 @@ extension NewViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         //start conservation
+        let targetUser = results[indexPath.row]
+        dismiss(animated: true, completion: {[weak self] in
+            self?.completion?(targetUser)
+        })
     }
 }
 
@@ -79,6 +90,7 @@ extension NewViewController: UISearchBarDelegate{
     }
     func searchUser(query: String){
         if fetched{
+            print("found")
             filterUser(with: query)
         }
         else{
@@ -97,15 +109,16 @@ extension NewViewController: UISearchBarDelegate{
     func filterUser(with term: String){
         // result or no result label
         guard fetched else{
+            print("sth wrong")
             return
         }
         self.spinner.dismiss()
-        
-        let results: [[String: String]] = self.users.filter({
+        let results: [[String: String]] = users.filter({
             guard let name = $0["name"]?.lowercased() else{
+                print("lowercase failed")
                 return false
             }
-            return name.hasPrefix(term.lowercased())
+            return name.contains(term.lowercased())
         })
         self.results = results
         update()
@@ -113,13 +126,15 @@ extension NewViewController: UISearchBarDelegate{
     
     func update(){
         if results.isEmpty{
-            self.noResults.isHidden = false
-            self.tableView.isHidden = true
+            noResults.isHidden = false
+            tableView.isHidden = true
+            print("isempty")
         }
         else{
-            self.noResults.isHidden = true
-            self.tableView.isHidden = false
-            self.tableView.reloadData()
+            noResults.isHidden = true
+            tableView.isHidden = false
+            tableView.reloadData()
+            print("notempty")
         }
     }
 }

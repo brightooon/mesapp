@@ -44,8 +44,22 @@ class ConversationViewController: UIViewController {
     }
     @objc private func didcomposeButton(){
         let vc = NewViewController()
+        vc.completion = {[weak self] result in
+            print("\(result)")
+            self?.createConversation(result: result)
+        }
         let nav = UINavigationController(rootViewController: vc)
         present(nav, animated: true)
+    }
+    private func createConversation(result: [String: String]){
+        guard let name = result["name"], let email = result["email"] else {
+            return
+        }
+        let vc = ChatViewController(with: email)
+        vc.isNewchat = true
+        vc.title = name
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -90,7 +104,7 @@ extension ConversationViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let vc = ChatViewController()
+        let vc = ChatViewController(with: "hello@gmail.com")
         vc.title = "Some One"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
