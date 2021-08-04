@@ -101,8 +101,8 @@ class ChatViewController: MessagesViewController {
                 DispatchQueue.main.async {
                     self?.messagesCollectionView.reloadDataAndKeepOffset()
                     if shouldScrollToBottom{
-                        self?.messagesCollectionView.scrollToLastItem()
-                        //self?.messagesCollectionView.scrollToBottom()
+                        //self?.messagesCollectionView.scrollToLastItem()
+                        self?.messagesCollectionView.scrollToBottom()
                     }
                 }
             case .failure(let error):
@@ -124,13 +124,14 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             return
         }
         print("Sending: \(text)")
+        let message = Message(sender: selfsender, messageId: messageID, sentDate: Date(), kind: .text(text))
         //send message
         if isNewchat {
             //create con in database
-            let message = Message(sender: selfsender, messageId: messageID, sentDate: Date(), kind: .text(text))
-            databaseset.shared.createConversation(with: anotheremail, name: self.title ?? "User", firstMessage: message, completion: { success in
+            databaseset.shared.createConversation(with: anotheremail, name: self.title ?? "User", firstMessage: message, completion: { [weak self] success in
                 if success {
                     print("sent")
+                    self?.isNewchat = false
                 }else{
                     print("failed")
                 }
@@ -138,6 +139,17 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         }
         else{
            //append the existing conversation data
+            guard let conversationID = conversationID, let name = self.title else{
+                return
+            }
+            databaseset.shared.sendMessage(to: conversationID, anotheremail: anotheremail ,name: name, message: message, completion: { success in
+                if success{
+                    print("message sent")
+                }
+                else{
+                    print("failed sent")
+                }
+            })
         }
     }
     
@@ -147,7 +159,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         guard let useremail = UserDefaults.standard.value(forKey: "email") as? String else{
             return nil
         }
-        let safeemail = databaseset.safeemail(email: useremail as! String)
+        let safeemail = databaseset.safeemail(email: useremail)
         let date = Self.dateFormat.string(from: Date())
         let newidentifier = "\(anotheremail)_\(safeemail)_\(date)"
         print("created messgae ID: \(newidentifier)")

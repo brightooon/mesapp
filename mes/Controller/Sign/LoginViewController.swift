@@ -123,6 +123,7 @@ class LoginViewController: UIViewController {
             return
         }
         spinner.show(in: view)
+        
         //Firebase
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self]authResult, error in
             
@@ -137,6 +138,19 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
+            
+            let safeemail = databaseset.safeemail(email: email)
+            databaseset.shared.getdata(path: safeemail, completion: {  result in
+                switch result{
+                case .success(let data):
+                    guard let userdata = data as? [String: Any], let firstname = userdata["first_name"] as? String, let lastname = userdata["last_name"] as? String else{
+                        return
+                    }
+                    UserDefaults.standard.set("\(firstname)\(lastname)", forKey: "name")
+                case .failure(let error):
+                    print("Failed to get data: \(error)")
+                }
+            })
             UserDefaults.standard.set(email, forKey: "email")
             
             print("Login successful, \(user)")

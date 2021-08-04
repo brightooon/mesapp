@@ -197,10 +197,10 @@ class RegisterViewController: UIViewController {
                     print("Error")
                     return
                 }
-                let safeemail = databaseset.safeemail(email: email)
+                //let safeemail = databaseset.safeemail(email: email)
                 let user = chatuser(firstname: firstname,
                                     lastname: lastname,
-                                    email: safeemail)
+                                    email: email)
                 databaseset.shared.insert(with: user, completion: { success in
                     if success {
                         //upload image
