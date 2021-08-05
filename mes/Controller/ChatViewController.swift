@@ -8,6 +8,7 @@
 import UIKit
 import MessageKit
 import InputBarAccessoryView
+import SDWebImage
 
 struct Message: MessageType{
     public var sender: SenderType
@@ -15,6 +16,13 @@ struct Message: MessageType{
     public var sentDate: Date
     public var kind: MessageKind
 }
+struct Media: MediaItem{
+    var url: URL?
+    var image: UIImage?
+    var placeholderImage: UIImage
+    var size: CGSize
+}
+
 extension MessageKind{
     var description: String{
         switch self{
@@ -86,13 +94,63 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+        messagesCollectionView.messageCellDelegate = self
+        //messagesCollectionView.delegate = self
         messageInputBar.delegate = self
+        setInputButton()
     }
+    
+    private func setInputButton(){
+        let button = InputBarButtonItem()
+        button.setSize(CGSize(width: 38, height: 38), animated: false)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.onTouchUpInside{ [weak self] _ in
+            self?.presentInputaction()
+        }
+        messageInputBar.setLeftStackViewWidthConstant(to: 40, animated: false)
+        messageInputBar.setStackViewItems([button], forStack: .left, animated: false)
+    }
+    private func presentInputaction(){
+        let action = UIAlertController(title: "Media", message: "", preferredStyle: .actionSheet)
+        action.addAction(UIAlertAction(title: "Photo", style: .default, handler: {[weak self] _ in
+            self?.presentPhotoinputAction()
+        }))
+        action.addAction(UIAlertAction(title: "Video", style: .default, handler: { _ in
+            
+        }))
+        action.addAction(UIAlertAction(title: "Audio", style: .default, handler: { _ in
+            
+        }))
+        action.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(action, animated: true)
+    }
+    
+    private func presentPhotoinputAction(){
+        let action = UIAlertController(title: "Photo", message: "", preferredStyle: .actionSheet)
+        action.addAction(UIAlertAction(title: "Camera", style: .default, handler: {[weak self] _ in
+            let pick = UIImagePickerController()
+            pick.sourceType = .camera
+            pick.delegate = self
+            pick.allowsEditing = true
+            self?.present(pick, animated: true)
+        }))
+        action.addAction(UIAlertAction(title: "Library", style: .default, handler: { [weak self] _ in
+            let pick = UIImagePickerController()
+            pick.sourceType = .photoLibrary
+            pick.delegate = self
+            pick.allowsEditing = true
+            self?.present(pick, animated: true)
+        }))
+        action.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(action, animated: true)
+    }
+    
     private func listenMessage(id: String, shouldScrollToBottom: Bool){
         databaseset.shared.getMessageInConversation(with: id, completion: { [weak self] result in
             switch result{
             case .success(let messages):
                 print("success getting messages: \(messages)")
+                
                 guard !messages.isEmpty else{
                     print("empty message")
                     return
@@ -101,7 +159,7 @@ class ChatViewController: MessagesViewController {
                 DispatchQueue.main.async {
                     self?.messagesCollectionView.reloadDataAndKeepOffset()
                     if shouldScrollToBottom{
-                        //self?.messagesCollectionView.scrollToLastItem()
+                        self?.messagesCollectionView.scrollToLastItem()
                         self?.messagesCollectionView.scrollToBottom()
                     }
                 }
@@ -118,6 +176,52 @@ class ChatViewController: MessagesViewController {
         }
     }
 }
+
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage,
+              let imagedata = image.pngData(),
+              let messageID = createMessageID(),
+              let conversationID = conversationID,
+              let name = self.title,
+              let selfsender = selfsender else{
+            return
+        }
+        let filename = "photo_message_" + messageID.replacingOccurrences(of: " ", with: "-") + ".png"
+        /// upload image and send message
+        StorageSet.shared.uploadMessagephoto(with: imagedata, fileName: filename , completion: { [weak self] result in
+            guard let strongself = self else{
+                return
+            }
+            switch result{
+            case .success(let urlString):
+                print("uploaded message photo: \(urlString)")
+                guard let url = URL(string: urlString), let placeholder = UIImage(systemName: "plus") else{
+                    return
+                }
+                
+                let media = Media(url: url, image: nil, placeholderImage: placeholder, size: .zero)
+                let message = Message(sender: selfsender, messageId: messageID, sentDate: Date(), kind: .photo(media))
+                
+                databaseset.shared.sendMessage(to: conversationID, anotheremail: strongself.anotheremail, name: name, message: message, completion: { success in
+                    if success {
+                        print("sent photo")
+                    }
+                    else{
+                        print("failed to send photo")
+                    }
+                })
+            case .failure(let error):
+                print("photo upload error: \(error)")
+            }
+        })
+    }
+}
+
 extension ChatViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         guard !text.replacingOccurrences(of: " ", with: "").isEmpty, let selfsender = self.selfsender, let messageID = createMessageID() else{
@@ -178,5 +282,41 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     }
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
         return messages.count
+    }
+    func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        guard let message = message as? Message else {
+            return
+        }
+        switch message.kind {
+        case .photo(let media):
+            guard let imageURL = media.url else{
+                return
+            }
+            imageView.sd_setImage(with: imageURL, completed: nil)
+        default:
+            break
+        }
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    }
+}
+
+extension ChatViewController: MessageCellDelegate{
+    func didTapImage(in cell: MessageCollectionViewCell) {
+        guard let indexPath = messagesCollectionView.indexPath(for: cell) else{
+            return
+        }
+        let message = messages[indexPath.section]
+        
+        switch message.kind {
+        case .photo(let media):
+            guard let imageURL = media.url else{
+                return
+            }
+            let vc = PhotoViewController(with: imageURL)
+            self.navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
+        }
     }
 }

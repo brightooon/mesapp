@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseDatabase
+import MessageKit
 
 final class databaseset{
     static let shared = databaseset()
@@ -114,11 +115,12 @@ extension databaseset{
         refernce.observeSingleEvent(of: .value, with: { [weak self] snapshot in
             guard var node = snapshot.value as? [String: Any] else{
                 completion(false)
-                print("not found")
+                print("user not found")
                 return
             }
             let messagedate = firstMessage.sentDate
             let dateString = ChatViewController.dateFormat.string(from: messagedate)
+            
             var mes = ""
             switch firstMessage.kind{
             case .text(let messagetext):
@@ -145,7 +147,7 @@ extension databaseset{
             let conversationID = "conversation_\(firstMessage.messageId)"
             let newConversation: [String: Any] = [
                 "id": conversationID,
-                "taget_email": anotheremail,
+                "target_email": anotheremail,
                 "name": name,
                 "latest_mesage": [
                     "date": dateString,
@@ -155,7 +157,7 @@ extension databaseset{
             ]
             let recipientNewConversation: [String: Any] = [
                 "id": conversationID,
-                "taget_email": safeemail,
+                "target_email": safeemail,
                 "name": currentName,
                 "latest_mesage": [
                     "date": dateString,
@@ -234,6 +236,7 @@ extension databaseset{
             return
         }
         let currentemail = databaseset.safeemail(email: selfemail)
+        
         let collectionmessage: [String: Any] = [
             "id": firstmessage.messageId,
             "type": firstmessage.kind.description,
@@ -248,6 +251,7 @@ extension databaseset{
             collectionmessage
             ]
         ]
+        print("add conversation: \(ConversationID)")
         database.child("\(ConversationID)").setValue( value, withCompletionBlock: { error, _ in
             guard error == nil else{
                 completion(false)
@@ -267,7 +271,7 @@ extension databaseset{
             let conversations: [conversation] = value.compactMap({ dict in
                 guard let conversationID = dict["id"] as? String,
                       let name = dict["name"] as? String,
-                      let target = dict["taget_email"] as? String,
+                      let target = dict["target_email"] as? String,
                       let latestMessage = dict["latest_mesage"] as? [String: Any],
                       let date = latestMessage["date"] as? String,
                       let message = latestMessage["message"] as? String,
@@ -290,7 +294,7 @@ extension databaseset{
             let messages: [Message] = value.compactMap({ dict in
                 guard let messageID = dict["id"] as? String,
                       let name = dict["name"] as? String,
-                      let target = dict["taget_email"] as? String,
+                      let target = dict["target_email"] as? String,
                       let dateString = dict["date"] as? String,
                       let date = ChatViewController.dateFormat.date(from: dateString),
                       let message = dict["content"] as? String,
@@ -298,9 +302,25 @@ extension databaseset{
                       let type = dict["type"] as? String else{
                         return nil
                 }
+                var kind: MessageKind?
+                if type == "photo"{
+                    guard let imageURL = URL(string: message), let placeholder = UIImage(systemName: "plus") else{
+                        return nil
+                    }
+                    let media = Media(url: imageURL, image: nil, placeholderImage: placeholder, size: CGSize(width: 250, height: 250))
+                    kind = .photo(media)
+                }else{
+                    kind = .text(message)
+                }
+                
+                guard let finalkind = kind else{
+                    return nil
+                }
                 let sender = Sender(photoURL: "", senderId: target, displayName: name)
-                return Message(sender: sender, messageId: messageID, sentDate: date, kind: .text(message))
+                return Message(sender: sender, messageId: messageID, sentDate: date,
+                               kind: finalkind )
             })
+            print("\(messages)")
             completion(.success(messages))
         })
         
@@ -328,7 +348,10 @@ extension databaseset{
                 mes = messagetext
             case .attributedText(_):
                 break
-            case .photo(_):
+            case .photo(let mediaitem):
+                if let targeturl = mediaitem.url?.absoluteString{
+                    mes = targeturl
+                }
                 break
             case .video(_):
                 break

@@ -33,6 +33,27 @@ final class StorageSet {
             })
         })
     }
+    
+    public func uploadMessagephoto(with data: Data, fileName: String, completion: @escaping uploadPicComplete){
+        storage.child("message_images/\(fileName)").putData(data, metadata: nil, completion: { metadata, error in
+            guard error == nil else{
+                //failed
+                print("failed to upload pic")
+                completion(.failure(StorageErrors.failedupload))
+                return
+            }
+            self.storage.child("message_images/\(fileName)").downloadURL(completion: {url, error in
+                guard let url = url else {
+                    print("failed to get download url")
+                    completion(.failure(StorageErrors.failedgetdownload))
+                    return
+                }
+                let urlString = url.absoluteString
+                print("download url returned: \(urlString)")
+                completion(.success(urlString))
+            })
+        })
+    }
     public enum StorageErrors: Error {
         case failedupload
         case failedgetdownload
