@@ -115,8 +115,8 @@ class ChatViewController: MessagesViewController {
         action.addAction(UIAlertAction(title: "Photo", style: .default, handler: {[weak self] _ in
             self?.presentPhotoinputAction()
         }))
-        action.addAction(UIAlertAction(title: "Video", style: .default, handler: { _ in
-            
+        action.addAction(UIAlertAction(title: "Video", style: .default, handler: { [weak self] _ in
+            self?.presentVideoinputAction()
         }))
         action.addAction(UIAlertAction(title: "Audio", style: .default, handler: { _ in
             
@@ -127,6 +127,30 @@ class ChatViewController: MessagesViewController {
     
     private func presentPhotoinputAction(){
         let action = UIAlertController(title: "Photo", message: "", preferredStyle: .actionSheet)
+        action.addAction(UIAlertAction(title: "Camera", style: .default, handler: {[weak self] _ in
+            let pick = UIImagePickerController()
+            pick.sourceType = .camera
+            pick.delegate = self
+            pick.mediaTypes = ["public.movie"]
+            pick.videoQuality = .typeMedium
+            pick.allowsEditing = true
+            self?.present(pick, animated: true)
+        }))
+        action.addAction(UIAlertAction(title: "Library", style: .default, handler: { [weak self] _ in
+            let pick = UIImagePickerController()
+            pick.sourceType = .photoLibrary
+            pick.delegate = self
+            pick.mediaTypes = ["public.movie"]
+            pick.videoQuality = .typeMedium
+            pick.allowsEditing = true
+            self?.present(pick, animated: true)
+        }))
+        action.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(action, animated: true)
+    }
+    
+    private func presentVideoinputAction(){
+        let action = UIAlertController(title: "Video", message: "", preferredStyle: .actionSheet)
         action.addAction(UIAlertAction(title: "Camera", style: .default, handler: {[weak self] _ in
             let pick = UIImagePickerController()
             pick.sourceType = .camera
@@ -191,7 +215,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
               let selfsender = selfsender else{
             return
         }
-        let filename = "photo_message_" + messageID.replacingOccurrences(of: " ", with: "-") + ".png"
+        let filename = "photo_message_" + messageID.replacingOccurrences(of: " ", with: "-") + "_png"
         /// upload image and send message
         StorageSet.shared.uploadMessagephoto(with: imagedata, fileName: filename , completion: { [weak self] result in
             guard let strongself = self else{

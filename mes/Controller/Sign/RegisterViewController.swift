@@ -21,7 +21,7 @@ class RegisterViewController: UIViewController {
         let imageview = UIImageView()
         let small = UIImage.SymbolConfiguration(weight: .thin)
         imageview.image = UIImage(systemName: "person.circle.fill", withConfiguration: small)
-        imageview.tintColor = .black
+        imageview.tintColor = .secondarySystemBackground
         //imageview.contentMode = .scaleAspectFill
         //imageview.layer.masksToBounds = true
         //imageview.layer.borderWidth = 2
@@ -40,7 +40,7 @@ class RegisterViewController: UIViewController {
         email.placeholder = "Email address"
         email.leftView = UIView(frame: CGRect(x:0, y:0, width:8, height:0))
         email.leftViewMode = .always
-        email.backgroundColor = .white
+        email.backgroundColor = .secondarySystemBackground
         return email
     }()
     
@@ -55,7 +55,7 @@ class RegisterViewController: UIViewController {
         pw.placeholder = "Password"
         pw.leftView = UIView(frame: CGRect(x:0, y:0, width:5, height:0))
         pw.leftViewMode = .always
-        pw.backgroundColor = .white
+        pw.backgroundColor = .secondarySystemBackground
        // pw.isSecureTextEntry = true
         return pw
     }()
@@ -71,7 +71,7 @@ class RegisterViewController: UIViewController {
         fn.placeholder = "First Name"
         fn.leftView = UIView(frame: CGRect(x:0, y:0, width:8, height:0))
         fn.leftViewMode = .always
-        fn.backgroundColor = .white
+        fn.backgroundColor = .secondarySystemBackground
         return fn
     }()
     private let lastnamefield: UITextField = {
@@ -85,7 +85,7 @@ class RegisterViewController: UIViewController {
         ln.placeholder = "Last Name"
         ln.leftView = UIView(frame: CGRect(x:0, y:0, width:8, height:0))
         ln.leftViewMode = .always
-        ln.backgroundColor = .white
+        ln.backgroundColor = .secondarySystemBackground
         return ln
     }()
     
@@ -104,7 +104,7 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        view.backgroundColor = .systemTeal
+        view.backgroundColor = .systemBackground
         title = "Register"
         /*
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign Up",

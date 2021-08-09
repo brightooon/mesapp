@@ -9,12 +9,12 @@ import UIKit
 import JGProgressHUD
 
 class NewViewController: UIViewController {
-    public var completion: (([String: String]) -> (Void))?
+    public var completion: ((searchresult) -> (Void))?
     
     private let spinner = JGProgressHUD(style: .dark)
     private var users = [[String: String]]()
     private var fetched = false
-    private var results = [[String: String]]()
+    private var results = [searchresult]()
     
     private let searchbar: UISearchBar = {
         let searchbar = UISearchBar()
@@ -24,7 +24,7 @@ class NewViewController: UIViewController {
     private let tableView: UITableView = {
         let table = UITableView()
         table.isHidden = true
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        table.register(Newconversation.self, forCellReuseIdentifier: Newconversation.identifier)
         return table
     }()
     
@@ -42,7 +42,6 @@ class NewViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(noResults)
         view.addSubview(tableView)
-        
         tableView.delegate = self
         tableView.dataSource = self
         searchbar.delegate = self
@@ -65,8 +64,9 @@ extension NewViewController: UITableViewDelegate, UITableViewDataSource{
         return results.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = results[indexPath.row]["name"]
+        let model = results[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: Newconversation.identifier, for: indexPath) as! Newconversation
+        cell.configure(with: model)
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -108,17 +108,27 @@ extension NewViewController: UISearchBarDelegate{
     }
     func filterUser(with term: String){
         // result or no result label
-        guard fetched else{
+        guard let currentemail = UserDefaults.standard.value(forKey: "email") as? String,fetched else{
             print("sth wrong")
             return
         }
+        let safeemail = databaseset.safeemail(email: currentemail)
         self.spinner.dismiss()
-        let results: [[String: String]] = users.filter({
+        let results: [searchresult] = users.filter({
             guard let name = $0["name"]?.lowercased() else{
                 print("lowercase failed")
                 return false
             }
+            guard let email = $0["email"], email != safeemail else{
+                print("email not safe")
+                return false
+            }
             return name.contains(term.lowercased())
+        }).compactMap({
+            guard let email = $0["email"], let name = $0["name"] else{
+                return nil
+            }
+            return searchresult(name: name, email: email)
         })
         self.results = results
         update()

@@ -11,6 +11,8 @@
 		325DCBFC1B5BC238D0CC3759 /* Pods_mesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2101BEF61CB3BD4D383697 /* Pods_mesTests.framework */; };
 		9C6F647A5950526D1B64A3B4 /* Pods_mes_mesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF6F59F4071C912722C6F85 /* Pods_mes_mesUITests.framework */; };
 		EC5F9E4526B8D24300FBD2EE /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F9E4426B8D24300FBD2EE /* ConversationTableViewCell.swift */; };
+		EC5F9E4726BE2F5600FBD2EE /* searchresult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F9E4626BE2F5600FBD2EE /* searchresult.swift */; };
+		EC5F9E4926BE688700FBD2EE /* Newconversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F9E4826BE688700FBD2EE /* Newconversation.swift */; };
 		EC76904C26A5E32200710C5A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76904B26A5E32200710C5A /* LoginViewController.swift */; };
 		EC76905426A5E34800710C5A /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76905326A5E34800710C5A /* RegisterViewController.swift */; };
 		EC76905926A5E37300710C5A /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC76905826A5E37300710C5A /* PhotoViewController.swift */; };
@@ -61,6 +63,8 @@
 		B627B9F1EECE85B5749C517B /* Pods-mes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mes.debug.xcconfig"; path = "Target Support Files/Pods-mes/Pods-mes.debug.xcconfig"; sourceTree = "<group>"; };
 		DBF2381966346BACE6864D23 /* Pods-mes-mesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mes-mesUITests.release.xcconfig"; path = "Target Support Files/Pods-mes-mesUITests/Pods-mes-mesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		EC5F9E4426B8D24300FBD2EE /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		EC5F9E4626BE2F5600FBD2EE /* searchresult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchresult.swift; sourceTree = "<group>"; };
+		EC5F9E4826BE688700FBD2EE /* Newconversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Newconversation.swift; sourceTree = "<group>"; };
 		EC76904B26A5E32200710C5A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EC76905326A5E34800710C5A /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		EC76905826A5E37300710C5A /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +164,7 @@
 				EC76904726A5D82900710C5A /* Storyboards */,
 				EC93DF1B26A5838F00EC2347 /* Assets.xcassets */,
 				EC5F9E4426B8D24300FBD2EE /* ConversationTableViewCell.swift */,
+				EC5F9E4826BE688700FBD2EE /* Newconversation.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -167,6 +172,7 @@
 		EC76904526A5D7C900710C5A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EC5F9E4626BE2F5600FBD2EE /* searchresult.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -532,8 +538,10 @@
 			files = (
 				EC76904C26A5E32200710C5A /* LoginViewController.swift in Sources */,
 				EC76905E26A5E38900710C5A /* VideoViewController.swift in Sources */,
+				EC5F9E4726BE2F5600FBD2EE /* searchresult.swift in Sources */,
 				EC7690AD26AC27BE00710C5A /* databaseset.swift in Sources */,
 				EC76912D26B0A3A900710C5A /* GoogleTranslate.swift in Sources */,
+				EC5F9E4926BE688700FBD2EE /* Newconversation.swift in Sources */,
 				EC76905426A5E34800710C5A /* RegisterViewController.swift in Sources */,
 				EC93DF1726A5838600EC2347 /* ConversationViewController.swift in Sources */,
 				EC93DF1326A5838600EC2347 /* AppDelegate.swift in Sources */,

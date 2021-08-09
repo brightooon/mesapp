@@ -30,7 +30,7 @@ class LoginViewController: UIViewController {
         email.placeholder = "Email address"
         email.leftView = UIView(frame: CGRect(x:0, y:0, width:8, height:0))
         email.leftViewMode = .always
-        email.backgroundColor = .white
+        email.backgroundColor = .secondarySystemBackground
         return email
     }()
     
@@ -45,7 +45,7 @@ class LoginViewController: UIViewController {
         pw.placeholder = "Password"
         pw.leftView = UIView(frame: CGRect(x:0, y:0, width:5, height:0))
         pw.leftViewMode = .always
-        pw.backgroundColor = .white
+        pw.backgroundColor = .secondarySystemBackground
         pw.isSecureTextEntry = true
         return pw
     }()
@@ -69,7 +69,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        view.backgroundColor = .systemTeal
+        view.backgroundColor = .systemBackground
         title = "Login"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign Up",

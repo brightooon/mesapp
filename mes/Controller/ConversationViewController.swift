@@ -51,7 +51,6 @@ class ConversationViewController: UIViewController {
         setuptableView()
         fetchConservation()
         listenConversation()
-        //view.backgroundColor = .systemTeal
         
     }
     private func listenConversation(){
@@ -81,22 +80,48 @@ class ConversationViewController: UIViewController {
     @objc private func didcomposeButton(){
         let vc = NewViewController()
         vc.completion = {[weak self] result in
+            guard let strongself = self else{
+                return
+            }
             print("\(result)")
-            self?.createConversation(result: result)
+            let currentConversation = strongself.conversations
+            if let targetConversation = currentConversation.first(where: {
+                $0.targetemail == databaseset.safeemail(email: result.email)
+            }){
+                let vc = ChatViewController(with: databaseset.safeemail(email: targetConversation.targetemail), id: targetConversation.id)
+                vc.isNewchat = false
+                vc.title = targetConversation.name
+                vc.navigationItem.largeTitleDisplayMode = .never
+                strongself.navigationController?.pushViewController(vc, animated: true)
+            }else{
+                strongself.createConversation(result: result)
+            }
         }
         let nav = UINavigationController(rootViewController: vc)
         present(nav, animated: true)
     }
-    private func createConversation(result: [String: String]){
-        guard let name = result["name"], let email = result["email"] else {
-            return
-        }
-        
-        let vc = ChatViewController(with: email, id: nil)
-        vc.isNewchat = true
-        vc.title = name
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
+    private func createConversation(result: searchresult){
+        let name = result.name
+        let email = databaseset.safeemail(email: result.email)
+        databaseset.shared.conversationExist(with: email, completion: { [weak self] result in
+            guard let strongself = self else{
+                return
+            }
+            switch result {
+            case .success(let conversationID):
+                let vc = ChatViewController(with: email, id: conversationID)
+                vc.isNewchat = false
+                vc.title = name
+                vc.navigationItem.largeTitleDisplayMode = .never
+                strongself.navigationController?.pushViewController(vc, animated: true)
+            case .failure(_):
+                let vc = ChatViewController(with: email, id: nil)
+                vc.isNewchat = true
+                vc.title = name
+                vc.navigationItem.largeTitleDisplayMode = .never
+                strongself.navigationController?.pushViewController(vc, animated: true)
+            }
+        })
     }
     
     override func viewDidLayoutSubviews() {
@@ -138,14 +163,18 @@ extension ConversationViewController: UITableViewDelegate, UITableViewDataSource
         cell.configure(with: model)
         return cell
     }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let model = conversations[indexPath.row]
-        
+    func openConversation(_ model: conversation){
         let vc = ChatViewController(with: model.targetemail, id: model.id)
         vc.title = model.name
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let model = conversations[indexPath.row]
+        openConversation(model)
+        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
