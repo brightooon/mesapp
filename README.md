@@ -26,5 +26,5 @@ Load profile picture and information in user's setting
 </p>
 
 ---
-make sure you have pod installed locally
+make sure you have pod installed locally <br />
 Next updates: Translate features and Enable modifying user info
